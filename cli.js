@@ -44,6 +44,10 @@ const actionsHandlers={
 			//TODO: implement this with the official styling of GameChanger QR codes.
 			throw new Error("QR generation failed. Not implemented yet");
 		},
+		'button':({network,inputData})=>{
+			//TODO: implement this
+			throw new Error("HTML dApp connector button generation failed. Not implemented yet");
+		},
 		'html':({network,inputData})=>{
 			//TODO: implement this
 			throw new Error("HTML generation failed. Not implemented yet");
@@ -104,6 +108,7 @@ Actions:
 		'url'     : generates a ready to use URL dApp connector from a valid GCScript
 		'qr'      : generates a ready to use URL dApp connector encoded into a QR code image from a valid GCScript
 		'html'    : generates a ready to use HTML dApp with a URL connector from a valid GCScript
+		'button'  : generates a ready to use HTML embeddable button snippet with a URL connector from a valid GCScript
 		'nodejs'  : generates a ready to use Node JS dApp with a URL connector from a valid GCScript
 		'react'   : generates a ready to use React dApp with a URL connector from a valid GCScript
 Options:

@@ -40,9 +40,13 @@
 	"dependencies": {
 		"@babel/runtime": "^7.15.4",
 		"@types/node": "^16.11.0",
+		"canvas": "^2.8.0",
 		"get-stdin": "^9.0.0",
+		"image-data-uri": "^2.0.1",
+		"jsdom": "^18.0.0",
 		"json-url": "^3.0.0",
-		"meow": "^9.0.0"
+		"meow": "^9.0.0",
+		"qr-code-styling-node": "^1.5.0"
 	},
 	"devDependencies": {
 		"ava": "^3.15.0",

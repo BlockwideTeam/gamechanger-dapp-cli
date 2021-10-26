@@ -28,6 +28,9 @@ Options:
         --file [filename] | -a [filename]:  Load GCScript from file
         without --args or --file         :  Load GCScript from stdin
 
+        --outputFile [filename] -o [filename]:  The QR Code, HTML, button, nodejs, or react output filename
+        without --outputFile                 :  Sends the QR Code, HTML, button, nodejs, or react output file to stdin
+        
 Examples
 
         $ gamechanger-dapp-cli mainnet build url -f demo.gcs

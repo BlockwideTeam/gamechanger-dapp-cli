@@ -22,9 +22,9 @@ const codec = require('json-url')('lzw');
 const QRCodeStyling = require("qr-code-styling-node");
 const nodeCanvas = require("canvas");
 
-const Logo = fs.readFileSync('./src/assets/images/logoBlack.png');
+const Logo = fs.readFileSync('./src/assets/images/dapp-logo.png');
 
-const size = 300;
+const size = 1024;
 const styling={
 	"width": size,
 	"height": size,
@@ -263,8 +263,10 @@ Actions:
 Options:
 	--args [gcscript] | -a [gcscript]:  Load GCScript from arguments
 	--file [filename] | -a [filename]:  Load GCScript from file
-	--outputFile [filename] -o [filename]:  The QR Code output filename
 	without --args or --file         :  Load GCScript from stdin
+
+	--outputFile [filename] -o [filename]:  The QR Code, HTML, button, nodejs, or react output filename
+	without --outputFile                 :  Sends the QR Code, HTML, button, nodejs, or react output file to stdin
 
 Examples
 
@@ -276,6 +278,12 @@ Examples
 
 	$ cat demo.gcs | ${cliName} mainnet build url
 	https://wallet.gamechanger.finance/api/1/tx/${demoPacked}
+
+	$ ${cliName} testnet build qr -a ${escapeShellArg(JSON.stringify(demoGCS))}
+	https://testnet-wallet.gamechanger.finance/api/1/tx/${demoPacked} > qr_output.png
+
+	$ ${cliName} testnet build qr -a ${escapeShellArg(JSON.stringify(demoGCS))}
+	https://testnet-wallet.gamechanger.finance/api/1/tx/${demoPacked} -o qr_output.png
 `;
 
 

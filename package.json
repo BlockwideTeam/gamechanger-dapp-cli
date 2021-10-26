@@ -40,6 +40,7 @@
 	"dependencies": {
 		"@babel/runtime": "^7.15.4",
 		"@types/node": "^16.11.0",
+		"app-root-path": "^3.0.0",
 		"canvas": "^2.8.0",
 		"get-stdin": "^9.0.0",
 		"image-data-uri": "^2.0.1",

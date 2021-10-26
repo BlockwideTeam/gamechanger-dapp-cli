@@ -5,9 +5,7 @@ import getStdin from 'get-stdin';
 import fs from 'fs';
 import jsdom from 'jsdom';
 import imageDataURI from 'image-data-uri';
-
 const { JSDOM } = jsdom;
-
 const dom = new JSDOM(`<!doctype html><html lang="en"><head></head><body></body></html>`);
 global['window'] = dom.window;
 global['document'] = dom.window.document;
@@ -21,8 +19,11 @@ const require = createRequire(import.meta.url);
 const codec = require('json-url')('lzw');
 const QRCodeStyling = require("qr-code-styling-node");
 const nodeCanvas = require("canvas");
+const path= require('path');
+const projectRoot=require('app-root-path').toString();
+const logoURL = path.resolve(path.join(projectRoot,'./src/assets/images/dapp-logo.png'));
 
-const Logo = fs.readFileSync('./src/assets/images/dapp-logo.png');
+const Logo = fs.readFileSync(logoURL);
 
 const size = 1024;
 const styling={

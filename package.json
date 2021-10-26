@@ -21,7 +21,9 @@
 		"full-test": "xo && ava"
 	},
 	"files": [
-		"cli.js"
+		"cli.js",
+		"demo.gcs",
+		"src/assets/"
 	],
 	"keywords": [
 		"Cardano",

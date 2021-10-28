@@ -1,11 +1,11 @@
 {
 	"name": "gamechanger-dapp-cli",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "Command line interface for creating ready to use dApps for Cardano with GameChanger Wallet (https://gamechanger.finance/)",
 	"license": "MIT",
 	"repository": "BlockwideTeam/gamechanger-dapp-cli",
 	"author": {
-		"name": "GameChanger Team",
+		"name": "Javier Ribó, Adriano Fiorenza",
 		"email": "info@gamechanger.finance",
 		"url": "https://gamechanger.finance/"
 	},
@@ -37,7 +37,11 @@
 		"dApp",
 		"dApp connector",
 		"blockchain",
-		"utxo"
+		"utxo",
+		"eutxo",
+		"qr",
+		"json",
+		"no code"
 	],
 	"dependencies": {
 		"@babel/runtime": "^7.15.4",

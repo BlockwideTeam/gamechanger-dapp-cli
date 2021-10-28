@@ -1,6 +1,10 @@
+![Build with us, a great future await us together](src/assets/images/dapp-cli-banner.png?raw=true)
+
+
 # GameChanger Wallet CLI
 
-> Harness the power of Cardano with this simple dApp connector generator for GameChanger Wallet. Build GCscripts, JSON-based scripts that gets packed into ready to use URL dApp connectors!
+> Harness the power of Cardano with this simple dApp connector generator for GameChanger Wallet. 
+Build GCscripts, JSON-based scripts that gets packed into ready to use URL dApp connectors!
 
 ## Install
 
@@ -42,7 +46,7 @@ Examples
         $ cat demo.gcs | gamechanger-dapp-cli mainnet build url
         https://wallet.gamechanger.finance/api/1/tx/woTCpHR5cGXConR4wqV0aXRsZcKkRGVtb8KrZGVzY3JpcMSKb27DmSHEmGVhdGVkIHfEi2ggZ2FtZWNoYW5nZXItZGFwcC1jbGnCqMSudGHEuMWCwoHCozEyM8KBwqfErnNzYcS0wqxIZWxsbyBXb3JsZCE
 
-	$ gamechanger-dapp-cli testnet build qr -a '{"type":"tx","title":"Demo","description":"created with gamechanger-dapp-cli","metadata":{"123":{"message":"Hello World!"}}}'
+	$ gamechanger-dapp-cli testnet build qr -a '{"type":"tx","title":"Demo","description":"created with gamechanger-dapp-cli","metadata":{"123":{"message":"Hello World!"}}}' > qr_output.png
 
 	$ gamechanger-dapp-cli testnet build qr -a '{"type":"tx","title":"Demo","description":"created with gamechanger-dapp-cli","metadata":{"123":{"message":"Hello World!"}}}' -o qr_output.png
 ```

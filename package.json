@@ -14,7 +14,7 @@
 		"gamechanger-dapp-cli": "cli.js"
 	},
 	"engines": {
-		"node": ">=14"
+		"node": ">=12"
 	},
 	"scripts": {
 		"test": "ava",

@@ -1,136 +1,24 @@
 #!/usr/bin/env node
 
+process.env.NODE_NO_WARNINGS = 1;
+
 import meow from 'meow';
 import getStdin from 'get-stdin';
 import fs from 'fs';
-import jsdom from 'jsdom';
-import imageDataURI from 'image-data-uri';
-const { JSDOM } = jsdom;
-const dom = new JSDOM(`<!doctype html><html lang="en"><head></head><body></body></html>`);
-global['window'] = dom.window;
-global['document'] = dom.window.document;
-global['self'] = dom.window;
-global['Image'] = dom.window.Image;
-global['XMLSerializer'] = dom.window.XMLSerializer;
-global['btoa'] = (str) => Buffer.from(str, 'binary').toString('base64');
+import Codec from 'json-url';
+import path from 'path';
+import { Readable } from 'stream';
 
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const codec = require('json-url')('lzw');
-const QRCodeStyling = require("qr-code-styling-node");
-const nodeCanvas = require("canvas");
-const path= require('path');
-const projectRoot=require('app-root-path').toString();
-const logoURL = path.resolve(path.join(projectRoot,'./src/assets/images/dapp-logo.png'));
+import createQRCode from './src/qr.js';
 
-const Logo = fs.readFileSync(logoURL);
-
-const size = 1024;
-const styling={
-	"width": size,
-	"height": size,
-	"data": "",
-	"margin": size*0.05,
-	"qrOptions": {
-		"typeNumber": "0",
-		"mode": "Byte",
-		"errorCorrectionLevel": "Q"
-	},
-	"imageOptions": {
-		"hideBackgroundDots": true,
-		"imageSize": 0.3,
-		"margin": 2//0.1
-	},
-	"dotsOptions": {
-		"type": "square",
-		"color": "#000000",
-		"gradient": null
-	},
-	"backgroundOptions": {
-		"color": "#ffffff",
-		"gradient": {
-			"type": "linear",
-			"rotation": 0,
-			"colorStops": [{
-				"offset": 0,
-				"color": "#1f00ff"
-			}, {
-				"offset": 1,
-				"color": "#9800ff"
-			}]
-		}
-	},
-	"image": imageDataURI.encode(Logo, 'PNG'),//"https://ipfs.io/ipfs/QmVPpS1gXXDMNo1x5hXoXgfcwzfVXScy67vSqL4kNPC99v",
-	"dotsOptionsHelper": {
-		"colorType": {
-			"single": true,
-			"gradient": false
-		},
-		"gradient": {
-			"linear": true,
-			"radial": false,
-			"color1": "#6a1a4c",
-			"color2": "#6a1a4c",
-			"rotation": "0"
-		}
-	},
-	"cornersSquareOptions": {
-		"type": "",
-		"color": "#000000"
-	},
-	"cornersSquareOptionsHelper": {
-		"colorType": {
-			"single": true,
-			"gradient": false
-		},
-		"gradient": {
-			"linear": true,
-			"radial": false,
-			"color1": "#000000",
-			"color2": "#000000",
-			"rotation": "0"
-		}
-	},
-	"cornersDotOptions": {
-		"type": "square",
-		"color": "#000000"
-	},
-	"cornersDotOptionsHelper": {
-		"colorType": {
-			"single": true,
-			"gradient": false
-		},
-		"gradient": {
-			"linear": true,
-			"radial": false,
-			"color1": "#000000",
-			"color2": "#000000",
-			"rotation": "0"
-		}
-	},
-	"backgroundOptionsHelper": {
-		"colorType": {
-			"single": true,
-			"gradient": false
-		},
-		"gradient": {
-			"linear": true,
-			"radial": false,
-			"color1": "#ffffff",
-			"color2": "#ffffff",
-			"rotation": "0"
-		}
-	}
-}
-const qrCode = new QRCodeStyling({
-	nodeCanvas,
-	...styling
-});
-
+const qrCode = createQRCode();
+const codec = Codec('lzw');
 const cliName='gamechanger-dapp-cli';
+
 function escapeShellArg (arg) {
     return `'${arg.replace(/'/g, `'\\''`)}'`;
 }
+
 const actionsHandlers={
 	'build':{
 		'url':({network,inputData})=>{
@@ -163,11 +51,11 @@ const actionsHandlers={
 		'qr':async ({network,inputData}) => {
 			let jsoned;
 			try{
-				if(!inputData)
+				if(!inputData) {
 					throw new Error('Empty GCScript provided')
+				}
 				jsoned=JSON.parse(inputData);
-			}
-			catch(err){
+			} catch(err){
 				throw new Error("Invalid GCScript. "+err.message);
 			}
 
@@ -180,14 +68,18 @@ const actionsHandlers={
 					url="https://testnet-wallet.gamechanger.finance/api/1/tx/"+gcscript;
 				else
 					throw new Error('Unknown Cardano network specification');
-
-					qrCode.update({data: url})
-					const qrBuffer =  await qrCode.getRawData('png');
-
+					qrCode.update({data: url});
+					const qrBuffer = await qrCode.getRawData('png');
 					if (cli.flags.outputFile) {
-						fs.writeFileSync(`./${cli.flags.outputFile}`, qrBuffer)
+						fs.writeFileSync(path.resolve(process.cwd(), `./${cli.flags.outputFile}`), qrBuffer)
 					}else {
-						console.log(qrBuffer.toString('binary'))
+						const stream = new Readable({
+							read() {
+							  this.push(qrBuffer);
+							  this.push(null);
+							}
+						});
+						stream.pipe(process.stdout)
 					}
 			} catch (err) {
 				throw new Error("Wrong QR Generation. " + err.message);
@@ -293,19 +185,17 @@ process.on('uncaughtException', function(err) {
 	console.error(usageMsg);
 });
 
-
 const execute=async ({
 	network,
 	action,
 	source,
-})=>{
+})=> {
 	const inputData=await source();
 	return action({network,inputData});
 }
 
 const cli = meow(usageMsg, {
 	importMeta: import.meta,
-	//allowUnknownFlags:false,
 	help:usageMsg,
 	autoHelp:true,
 	flags: {
@@ -321,7 +211,7 @@ const cli = meow(usageMsg, {
 			type: 'string',
 			alias:'i',
 		},
-		outputFile:{ // Not used yet, for example will be used with QR code
+		outputFile:{
 			type: 'string',
 			alias:'o',
 		},
@@ -329,28 +219,41 @@ const cli = meow(usageMsg, {
 });
 
 
-const network=cli.input[0];
-if(!networks.includes(network))
-	throw new Error('Unknown Cardano network specification')
-const action=cli.input[1];
-if(!actions.includes(action))
-	throw new Error('Unknown action')
-const subAction=cli.input[2];
-if(!Object.keys(actionsHandlers[action]).includes(subAction))
-	throw new Error(`Unknown sub action for action '${action}'`);
-let source;
-if(cli.flags.args)
-	source='args';
-else
-if (cli.flags.file)
-	source='file';
-else
-	source='stdin';
+try {
+	const network=cli.input[0];
+	if(!networks.includes(network)) {
+		throw new Error('Unknown Cardano network specification')
+	}
+	const action=cli.input[1];
+	if(!actions.includes(action)) {
+		throw new Error('Unknown action')
+	}
 
-const actionResolver=actionsHandlers[action][subAction];
-const sourceResolver=sourcesHandlers[source];
-execute({
-	network,
-	action:actionResolver,
-	source:sourceResolver,
-});
+	const subAction=cli.input[2];
+	if(!Object.keys(actionsHandlers[action]).includes(subAction)) {
+		throw new Error(`Unknown sub action for action '${action}'`);
+	}
+
+	let source;
+	if(cli.flags.args){
+		source='args';
+	} else if (cli.flags.file){
+		source='file';
+	} else {
+		source='stdin';
+	}
+
+	const actionResolver=actionsHandlers[action][subAction];
+	const sourceResolver=sourcesHandlers[source];
+
+	execute({
+		network,
+		action:actionResolver,
+		source:sourceResolver,
+	});
+
+}catch (err) {
+	console.error('Error: ' + err.message);
+	console.error(usageMsg);
+	process.exit(1);
+}

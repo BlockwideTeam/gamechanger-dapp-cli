@@ -1,6 +1,5 @@
-#!/usr/bin/env node
-
-process.env.NODE_NO_WARNINGS = 1;
+#!/bin/sh
+':' //; exec "$(command -v node)" "--experimental-modules" "--no-warnings" "$0" "$@"
 
 import meow from 'meow';
 import getStdin from 'get-stdin';

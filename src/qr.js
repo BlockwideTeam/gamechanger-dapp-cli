@@ -1,6 +1,6 @@
 import 'node-self';
 import QRCodeStyling from 'qr-code-styling-node';
-import canvas from 'canvas';
+import canvas from 'node-canvas';
 import jsdom from 'jsdom';
 
 import styling from './config/styles.js';

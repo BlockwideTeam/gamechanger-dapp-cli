@@ -1,6 +1,6 @@
 {
 	"name": "gamechanger-dapp-cli",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Command line interface for creating ready to use dApps for Cardano with GameChanger Wallet (https://gamechanger.finance/)",
 	"license": "MIT",
 	"repository": "BlockwideTeam/gamechanger-dapp-cli",
@@ -21,11 +21,9 @@
 		"full-test": "xo && ava"
 	},
 	"files": [
-		"license",
-		"readme.md",
 		"cli.js",
 		"demo.gcs",
-		"src/"
+		"src"
 	],
 	"keywords": [
 		"Cardano",
@@ -49,12 +47,13 @@
 		"@babel/runtime": "^7.15.4",
 		"@types/node": "^16.11.0",
 		"app-root-path": "^3.0.0",
-		"canvas": "^2.8.0",
 		"get-stdin": "^9.0.0",
 		"image-data-uri": "^2.0.1",
 		"jsdom": "^18.0.0",
 		"json-url": "^3.0.0",
 		"meow": "^9.0.0",
+		"node-canvas": "^2.7.0",
+		"node-gyp": "^8.3.0",
 		"node-self": "^1.0.0-c",
 		"qr-code-styling": "^1.6.0-rc.1",
 		"qr-code-styling-node": "^1.5.0",

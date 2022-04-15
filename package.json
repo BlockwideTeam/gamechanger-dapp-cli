@@ -45,8 +45,14 @@
 	],
 	"dependencies": {
 		"@babel/runtime": "^7.15.4",
+		"@nightlylabs/qr-code": "^1.0.6",
 		"@types/node": "^16.11.0",
 		"app-root-path": "^3.0.0",
+		"awesome-qr": "^2.1.5-rc.0",
+		"blob-to-buffer": "^1.2.9",
+		"data-uri-to-buffer": "^4.0.0",
+		"easyqrcodejs": "^4.4.10",
+		"easyqrcodejs-nodejs": "^4.4.3",
 		"get-stdin": "^9.0.0",
 		"image-data-uri": "^2.0.1",
 		"jsdom": "^18.0.0",
@@ -55,7 +61,6 @@
 		"node-canvas": "^2.7.0",
 		"node-gyp": "^8.3.0",
 		"node-self": "^1.0.0-c",
-		"qr-code-styling": "^1.6.0-rc.1",
 		"qr-code-styling-node": "^1.5.0",
 		"stream": "0.0.2"
 	},

@@ -1,140 +1,137 @@
 #!/bin/sh
-':' //; exec "$(command -v node)" "--experimental-modules" "--no-warnings" "$0" "$@"
+":"; //; exec "$(command -v node)" "--experimental-modules" "--no-warnings" "$0" "$@"
 
-import meow from 'meow';
-import getStdin from 'get-stdin';
-import fs from 'fs';
-import Codec from 'json-url';
-import path from 'path';
-import { Readable } from 'stream';
+import meow from "meow";
+import getStdin from "get-stdin";
+import fs from "fs";
+import Codec from "json-url";
+import path from "path";
+import { Readable } from "stream";
 
-import createQRCode from './src/qr.js';
+import createQRCode from "./src/qr.js";
 
-const qrCode = createQRCode();
-const codec = Codec('lzw');
-const cliName='gamechanger-dapp-cli';
+const codec = Codec("lzw");
+const cliName = "gamechanger-dapp-cli";
 
-function escapeShellArg (arg) {
-    return `'${arg.replace(/'/g, `'\\''`)}'`;
+function escapeShellArg(arg) {
+	return `'${arg.replace(/'/g, `'\\''`)}'`;
 }
 
-const actionsHandlers={
-	'build':{
-		'url':({network,inputData})=>{
+const actionsHandlers = {
+	build: {
+		url: ({ network, inputData }) => {
 			let jsoned;
-			try{
-				if(!inputData)
-					throw new Error('Empty GCScript provided')
-				jsoned=JSON.parse(inputData);
+			try {
+				if (!inputData) throw new Error("Empty GCScript provided");
+				jsoned = JSON.parse(inputData);
+			} catch (err) {
+				throw new Error("Invalid GCScript. " + err.message);
 			}
-			catch(err){
-				throw new Error("Invalid GCScript. "+err.message);
-			}
-			return codec.compress(jsoned)
-			.then(gcscript => {
-				let url;
-				if(network==='mainnet')
-					url="https://wallet.gamechanger.finance/api/1/tx/"+gcscript;
-				else
-				if(network==='testnet')
-					url="https://testnet-wallet.gamechanger.finance/api/1/tx/"+gcscript;
-				else
-					throw new Error('Unknown Cardano network specification');
-				console.info(url);
-				return url;
-			})
-			.catch(err => {
-				throw new Error("URL generation failed." + err.message);
-			})
+			return codec
+				.compress(jsoned)
+				.then((gcscript) => {
+					let url;
+					if (network === "mainnet")
+						url = "https://wallet.gamechanger.finance/api/1/tx/" + gcscript;
+					else if (network === "testnet")
+						url =
+							"https://testnet-wallet.gamechanger.finance/api/1/tx/" + gcscript;
+					else throw new Error("Unknown Cardano network specification");
+					console.info(url);
+					return url;
+				})
+				.catch((err) => {
+					throw new Error("URL generation failed." + err.message);
+				});
 		},
-		'qr':async ({network,inputData}) => {
+		qr: async ({ network, inputData }) => {
 			let jsoned;
-			try{
-				if(!inputData) {
-					throw new Error('Empty GCScript provided')
+			try {
+				if (!inputData) {
+					throw new Error("Empty GCScript provided");
 				}
-				jsoned=JSON.parse(inputData);
-			} catch(err){
-				throw new Error("Invalid GCScript. "+err.message);
+				jsoned = JSON.parse(inputData);
+			} catch (err) {
+				throw new Error("Invalid GCScript. " + err.message);
 			}
 
 			try {
 				const gcscript = await codec.compress(jsoned);
 				let url;
-				if(network==='mainnet')
-					url="https://wallet.gamechanger.finance/api/1/tx/"+gcscript;
-				else if(network==='testnet')
-					url="https://testnet-wallet.gamechanger.finance/api/1/tx/"+gcscript;
-				else
-					throw new Error('Unknown Cardano network specification');
-					qrCode.update({data: url});
-					const qrBuffer = await qrCode.getRawData('png');
-					if (cli.flags.outputFile) {
-						fs.writeFileSync(path.resolve(process.cwd(), `./${cli.flags.outputFile}`), qrBuffer)
-					}else {
-						const stream = new Readable({
-							read() {
-							  this.push(qrBuffer);
-							  this.push(null);
-							}
-						});
-						stream.pipe(process.stdout)
-					}
+				if (network === "mainnet")
+					url = "https://wallet.gamechanger.finance/api/1/tx/" + gcscript;
+				else if (network === "testnet")
+					url =
+						"https://testnet-wallet.gamechanger.finance/api/1/tx/" + gcscript;
+				else throw new Error("Unknown Cardano network specification");
+				const qrCode = createQRCode({
+					text: url,
+				});
+
+				if (cli.flags.outputFile) {
+					await qrCode.saveImage({
+						path: path.resolve(process.cwd(), `./${cli.flags.outputFile}`),
+					});
+				} else {
+					const stream = await qrCode.toStream();
+					stream.pipe(process.stdout);
+				}
 			} catch (err) {
 				throw new Error("Wrong QR Generation. " + err.message);
 			}
 		},
-		'button':({network,inputData})=>{
+		button: ({ network, inputData }) => {
 			//TODO: implement this
-			throw new Error("HTML dApp connector button generation failed. Not implemented yet");
+			throw new Error(
+				"HTML dApp connector button generation failed. Not implemented yet"
+			);
 		},
-		'html':({network,inputData})=>{
+		html: ({ network, inputData }) => {
 			//TODO: implement this
 			throw new Error("HTML generation failed. Not implemented yet");
 		},
-		'nodejs':({network,inputData})=>{
+		nodejs: ({ network, inputData }) => {
 			//TODO: implement this
 			throw new Error("NodeJS generation failed. Not implemented yet");
 		},
-		'react':({network,inputData})=>{
+		react: ({ network, inputData }) => {
 			//TODO: implement this
 			throw new Error("React generation failed. Not implemented yet");
-		}
-
-	}
-}
-const sourcesHandlers={
-	'args': ()=>Promise.resolve(cli.flags.args ),
-	'file': ()=>{
-		const filename=cli.flags.file;
-		return new Promise((resolve,reject)=>{
-			fs.readFile(filename,'utf8',(err,data)=>{
-				if(err)
-					return reject( new Error("Failed to read from stdin." + err.message));
+		},
+	},
+};
+const sourcesHandlers = {
+	args: () => Promise.resolve(cli.flags.args),
+	file: () => {
+		const filename = cli.flags.file;
+		return new Promise((resolve, reject) => {
+			fs.readFile(filename, "utf8", (err, data) => {
+				if (err)
+					return reject(new Error("Failed to read from stdin." + err.message));
 				return resolve(data.toString());
 			});
-		})
-
+		});
 	},
-	'stdin':()=>getStdin(),
-	"outputFile": () => Promise.resolve(cli.flags.outputFile)
-}
-const networks=['mainnet','testnet'];
-const actions=Object.keys(actionsHandlers);
-const sources=Object.keys(sourcesHandlers);
+	stdin: () => getStdin(),
+	outputFile: () => Promise.resolve(cli.flags.outputFile),
+};
+const networks = ["mainnet", "testnet"];
+const actions = Object.keys(actionsHandlers);
+const sources = Object.keys(sourcesHandlers);
 
-const demoGCS={
-    "type": "tx",
-	"title": "Demo",
-	"description":"created with "+ cliName,
-    "metadata": {
-        "123": {
-            "message": "Hello World!"
-        }
-    }
-}
-const demoPacked='woTCpHR5cGXConR4wqV0aXRsZcKkRGVtb8KrZGVzY3JpcMSKb27DmSHEmGVhdGVkIHfEi2ggZ2FtZWNoYW5nZXItZGFwcC1jbGnCqMSudGHEuMWCwoHCozEyM8KBwqfErnNzYcS0wqxIZWxsbyBXb3JsZCE'
-const usageMsg=`
+const demoGCS = {
+	type: "tx",
+	title: "Demo",
+	description: "created with " + cliName,
+	metadata: {
+		123: {
+			message: "Hello World!",
+		},
+	},
+};
+const demoPacked =
+	"woTCpHR5cGXConR4wqV0aXRsZcKkRGVtb8KrZGVzY3JpcMSKb27DmSHEmGVhdGVkIHfEi2ggZ2FtZWNoYW5nZXItZGFwcC1jbGnCqMSudGHEuMWCwoHCozEyM8KBwqfErnNzYcS0wqxIZWxsbyBXb3JsZCE";
+const usageMsg = `
 GameChanger Wallet CLI:
 	Harness the power of Cardano with this simple dApp connector generator for GameChanger Wallet.
 	Build GCscripts, JSON-based scripts that gets packed into ready to use URL dApp connectors!
@@ -142,7 +139,7 @@ GameChanger Wallet CLI:
 Usage
 	$ ${cliName} [network] [action] [subaction]
 
-Networks: ${networks.map(x=>`'${x}'`).join(' | ')}
+Networks: ${networks.map((x) => `'${x}'`).join(" | ")}
 
 Actions:
 	'build':
@@ -178,81 +175,74 @@ Examples
 	https://testnet-wallet.gamechanger.finance/api/1/tx/${demoPacked} -o qr_output.png
 `;
 
-
-process.on('uncaughtException', function(err) {
-	console.error('Error: ' + err.message);
+process.on("uncaughtException", function (err) {
+	console.error("Error: " + err.message);
 	console.error(usageMsg);
 });
 
-const execute=async ({
-	network,
-	action,
-	source,
-})=> {
-	const inputData=await source();
-	return action({network,inputData});
-}
+const execute = async ({ network, action, source }) => {
+	const inputData = await source();
+	return action({ network, inputData });
+};
 
 const cli = meow(usageMsg, {
 	importMeta: import.meta,
-	help:usageMsg,
-	autoHelp:true,
+	help: usageMsg,
+	autoHelp: true,
 	flags: {
-		args:{
-			type: 'string',
-			alias:'a',
+		args: {
+			type: "string",
+			alias: "a",
 		},
-		file:{
-			type: 'string',
-			alias:'f',
+		file: {
+			type: "string",
+			alias: "f",
 		},
-		stdin:{
-			type: 'string',
-			alias:'i',
+		stdin: {
+			type: "string",
+			alias: "i",
 		},
-		outputFile:{
-			type: 'string',
-			alias:'o',
+		outputFile: {
+			type: "string",
+			alias: "o",
 		},
-	}
+	},
 });
 
-
 try {
-	const network=cli.input[0];
-	if(!networks.includes(network)) {
-		throw new Error('Unknown Cardano network specification')
+	const network = cli.input[0];
+	if (!networks.includes(network)) {
+		throw new Error("Unknown Cardano network specification");
 	}
-	const action=cli.input[1];
-	if(!actions.includes(action)) {
-		throw new Error('Unknown action')
+	const action = cli.input[1];
+	if (!actions.includes(action)) {
+		throw new Error("Unknown action");
 	}
 
-	const subAction=cli.input[2];
-	if(!Object.keys(actionsHandlers[action]).includes(subAction)) {
+	const subAction = cli.input[2];
+	if (!Object.keys(actionsHandlers[action]).includes(subAction)) {
 		throw new Error(`Unknown sub action for action '${action}'`);
 	}
 
 	let source;
-	if(cli.flags.args){
-		source='args';
-	} else if (cli.flags.file){
-		source='file';
+	if (cli.flags.args) {
+		source = "args";
+	} else if (cli.flags.file) {
+		source = "file";
 	} else {
-		source='stdin';
+		source = "stdin";
 	}
 
-	const actionResolver=actionsHandlers[action][subAction];
-	const sourceResolver=sourcesHandlers[source];
+	const actionResolver = actionsHandlers[action][subAction];
+	const sourceResolver = sourcesHandlers[source];
 
 	execute({
 		network,
-		action:actionResolver,
-		source:sourceResolver,
+		action: actionResolver,
+		source: sourceResolver,
 	});
-
-}catch (err) {
-	console.error('Error: ' + err.message);
+} catch (err) {
+	console.error("Error: " + err.message);
 	console.error(usageMsg);
 	process.exit(1);
 }

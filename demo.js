@@ -1,21 +1,29 @@
-import "node-self";
 import QRCode from "easyqrcodejs-nodejs";
 import jsdom from "jsdom";
-import Style from "./config/styles.js";
+import Root from "app-root-path";
+import path from "path";
+import fs from "fs";
+import convert from "data-uri-to-buffer";
 
 const { JSDOM } = jsdom;
-
 const dom = new JSDOM(
 	`<!doctype html><html lang="en"><head></head><body></body></html>`
 );
-
 global["window"] = dom.window;
 global["document"] = dom.window.document;
 global["self"] = dom.window;
 global["Image"] = dom.window.Image;
 global["XMLSerializer"] = dom.window.XMLSerializer;
 global["btoa"] = (str) => Buffer.from(str, "binary").toString("base64");
+global["navigator"] = dom.window.Navigator;
 
+const logoURL = path.resolve(
+	Root.toString(),
+	"./src/assets/images/dapp-logobg.png"
+);
+const Logo = fs.readFileSync(logoURL);
+
+const size = 1024;
 function getBackGround(width) {
 	var canvas = document.createElement("canvas"),
 		ctx = canvas.getContext("2d"),
@@ -40,12 +48,29 @@ function getBackGround(width) {
 	return ctx;
 }
 
-function createQRCode(options = {}) {
-	const qrCode = new QRCode({
-		...Style.defaultOptions,
-		...options,
-	});
-	return qrCode;
-}
+(async () => {
+	const background = getBackGround(size);
+	fs.writeFileSync("./background.png", convert(background.canvas.toDataURL()));
 
-export default createQRCode;
+	var options = {
+		width: size,
+		height: size,
+		colorDark: "#000000",
+		colorLight: "rgba(0,0,0,0)",
+		text: "https://github.com/ushelp/EasyQRCodeJS",
+		drawer: "canvas",
+		logo: logoURL,
+		logoWidth: 1024,
+		logoHeight: 1024,
+		logoBackgroundTransparent: true,
+		backgroundImage: "./background.png",
+		autoColor: false,
+		version: 6,
+	};
+
+	// Create QRCode Object
+	const result = new QRCode(options);
+
+	const image = await result.saveImage({ path: "./testCaca.png" });
+	console.log(1);
+})();

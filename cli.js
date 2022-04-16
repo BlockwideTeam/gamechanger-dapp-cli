@@ -6,8 +6,6 @@ import getStdin from "get-stdin";
 import fs from "fs";
 import Codec from "json-url";
 import path from "path";
-import { Readable } from "stream";
-
 import createQRCode from "./src/qr.js";
 
 const codec = Codec("lzw");

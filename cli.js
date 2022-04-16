@@ -62,9 +62,10 @@ const actionsHandlers = {
 					url =
 						"https://testnet-wallet.gamechanger.finance/api/1/tx/" + gcscript;
 				else throw new Error("Unknown Cardano network specification");
-				const qrCode = createQRCode({
-					text: url,
-				});
+
+				const template = cli.flags.template || "default";
+
+				const qrCode = createQRCode(url, template);
 
 				if (cli.flags.outputFile) {
 					await qrCode.saveImage({
@@ -155,6 +156,8 @@ Options:
 	--outputFile [filename] -o [filename]:  The QR Code, HTML, button, nodejs, or react output filename
 	without --outputFile                 :  Sends the QR Code, HTML, button, nodejs, or react output file to stdin
 
+	--template [template name] | -t [template name]: default, boxed or printable
+
 Examples
 
 	$ ${cliName} mainnet build url -f demo.gcs
@@ -203,6 +206,10 @@ const cli = meow(usageMsg, {
 		outputFile: {
 			type: "string",
 			alias: "o",
+		},
+		template: {
+			type: "string",
+			alias: "t",
 		},
 	},
 });

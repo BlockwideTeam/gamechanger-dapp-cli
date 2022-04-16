@@ -20,7 +20,9 @@
 				"-a",
 				"{\"type\":\"tx\",\"title\":\"Demo\",\"description\":\"created with gamechanger-dapp-cli\",\"metadata\":{\"123\":{\"message\":\"Hello World!\"}}}",
 				"-o",
-				"test.png"
+				"test.png",
+				"-t",
+				"boxed"
 			]
         }
     ]

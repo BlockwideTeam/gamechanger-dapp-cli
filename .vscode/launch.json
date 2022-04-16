@@ -1,29 +1,19 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "pwa-node",
-            "request": "launch",
-            "name": "Launch Program",
-			"runtimeVersion": "12.22.5",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}/cli.js",
-			"args":[
-				"testnet",
-				"build",
-				"qr",
-				"-a",
-				"{\"type\":\"tx\",\"title\":\"Demo\",\"description\":\"created with gamechanger-dapp-cli\",\"metadata\":{\"123\":{\"message\":\"Hello World!\"}}}",
-				"-o",
-				"test.png",
-				"-t",
-				"boxed"
-			]
-        }
-    ]
+  // Use IntelliSense to learn about possible Node.js debug attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach by Process",
+      "protocol": "inspector",
+      "port": 9229,
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js",
+        "<node_internals>/**/*.js"
+      ]
+    }
+  ]
 }

@@ -11,19 +11,13 @@
 	},
 	"type": "module",
 	"bin": {
-		"gamechanger-dapp-cli": "cli.js"
+		"gamechanger-dapp-cli": "dist/cli.js"
 	},
 	"engines": {
 		"node": ">=12"
 	},
-	"scripts": {
-		"test": "ava",
-		"full-test": "xo && ava"
-	},
 	"files": [
-		"cli.js",
-		"demo.gcs",
-		"src"
+		"dist/**/*"
 	],
 	"keywords": [
 		"Cardano",
@@ -43,29 +37,40 @@
 		"json",
 		"no code"
 	],
+	"scripts": {
+		"prepublish": "npm run build",
+		"start": "npm run build-ts && node dist/index.js",
+		"dev": "npm run build-ts && node --inspect-brk dist/index.js",
+		"type-check": "tsc --noEmit && eslint .",
+		"build": "rm -Rf dist/ && npm run type-check && tsc -p tsconfig.json",
+		"test": "ava",
+		"full-test": "xo && ava"
+	},
+	"typings": "index.d.ts",
+	"devDependencies": {
+		"@types/jsdom": "^16.2.14",
+		"@types/node": "^16.11.27",
+		"@typescript-eslint/eslint-plugin": "^5.3.1",
+		"@typescript-eslint/parser": "^5.3.1",
+		"ava": "^3.15.0",
+		"eslint": "^8.2.0",
+		"eslint-config-prettier": "^8.3.0",
+		"execa": "^5.0.0",
+		"prettier": "^2.4.1",
+		"typescript": "^4.4.4",
+		"xo": "^0.46.3"
+	},
 	"dependencies": {
 		"@babel/runtime": "^7.15.4",
-		"@nightlylabs/qr-code": "^1.0.6",
-		"@types/node": "^16.11.0",
 		"app-root-path": "^3.0.0",
-		"awesome-qr": "^2.1.5-rc.0",
 		"data-uri-to-buffer": "^4.0.0",
-		"easyqrcodejs": "^4.4.10",
 		"easyqrcodejs-nodejs": "^4.4.3",
+		"fs": "0.0.1-security",
 		"get-stdin": "^9.0.0",
-		"image-data-uri": "^2.0.1",
-		"jsdom": "^18.0.0",
 		"json-url": "^3.0.0",
-		"meow": "^9.0.0",
-		"node-canvas": "^2.7.0",
-		"node-gyp": "^8.3.0",
-		"node-self": "^1.0.0-c",
-		"qr-code-styling-node": "^1.5.0",
+		"meow": "^10.1.2",
+		"node-self": "^1.0.0-d",
+		"path": "^0.12.7",
 		"stream": "0.0.2"
-	},
-	"devDependencies": {
-		"ava": "^3.15.0",
-		"execa": "^5.0.0",
-		"xo": "^0.46.3"
 	}
 }

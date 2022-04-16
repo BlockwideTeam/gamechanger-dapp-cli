@@ -1,0 +1,33 @@
+{
+	"compilerOptions": {
+		"target": "es2020",
+		"module": "es2020",
+		"allowJs": false,
+		"checkJs": false,
+		"sourceMap": true,
+		"outDir": "./dist",
+		"strict": true,
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"isolatedModules": true,
+		"baseUrl": ".",
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"skipLibCheck": false,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"typeRoots": ["./node_modules/@types"],
+		"types": ["node"],
+		"importHelpers": true
+	},
+	"exclude": ["test.js"],
+	"include": [
+		"src/**/*",
+		"index.d.ts",
+		"./node_modules/easyqrcodejs-nodejs/index.d.ts"
+	]
+}

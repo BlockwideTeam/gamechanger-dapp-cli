@@ -7,11 +7,11 @@
 		"sourceMap": false,
 		"outDir": "./dist",
 		"strict": true,
-		"noImplicitAny": true,
+		"noImplicitAny": false,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"isolatedModules": true,
-		"baseUrl": ".",
+		"baseUrl": "dist",
 		"allowSyntheticDefaultImports": true,
 		"moduleResolution": "node",
 		"esModuleInterop": true,
@@ -28,10 +28,9 @@
 	"include": [
 		"test.ts",
 		"src/**/*",
-		"index.d.ts",
-		"./node_modules/easyqrcodejs-nodejs/index.d.ts"
-	],
-	"ts-node": {
-		"esm": true
-	}
+		"src/index.d.ts",
+		"./node_modules/easyqrcodejs-nodejs/index.d.ts",
+		"tests/main.ts",
+		"tests/*.test.ts"
+	]
 }

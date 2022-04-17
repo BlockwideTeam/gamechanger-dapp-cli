@@ -17,9 +17,7 @@
 		"node": ">=12"
 	},
 	"files": [
-		"dist/**/*",
-		".bin/**/*",
-		"src/assets/**/*"
+		"dist/**/*"
 	],
 	"keywords": [
 		"Cardano",
@@ -43,11 +41,11 @@
 		"prepublish": "npm run build:prod",
 		"clean": "rm -Rf dist",
 		"build:all": "npm run clean && npm run type-check",
-		"build:dev": "esbuild src/cli.ts --bundle --platform=node --outfile=dist/cli.js --external:./node_modules/* --format=esm",
-		"build:prod": "esbuild src/cli.ts --bundle --platform=node --minify --sourcemap=external --outfile=dist/cli.js --external:./node_modules/* --format=esm",
+		"build:dev": "esbuild src/cli.ts --bundle --platform=node --outfile=dist/cli.js --external:./node_modules/* --format=esm && cp -R src/assets dist",
+		"build:prod": "esbuild src/cli.ts --bundle --platform=node --minify --sourcemap=external --outfile=dist/cli.js --external:./node_modules/* --format=esm && cp -R src/assets dist",
 		"start": "node dist/cli.js",
 		"type-check": "tsc --noEmit && eslint .",
-		"test": "mocha  --loader=ts-node/esm --no-warnings  -p tsconfig.json src/**/*.spec.ts"
+		"test": "ts-mocha  --require=ts-node/register --loader=ts-node/esm --no-warnings --experimental-module --experimental-specifier-resolution=node -p tsconfig.json tests/main.ts tests/**/*.test.ts"
 	},
 	"typings": "index.d.ts",
 	"devDependencies": {
@@ -65,6 +63,7 @@
 		"execa": "^5.0.0",
 		"mocha": "^9.2.2",
 		"prettier": "^2.4.1",
+		"sinon": "^13.0.2",
 		"ts-mocha": "^9.0.2",
 		"ts-node": "^10.7.0",
 		"typescript": "^4.4.4"

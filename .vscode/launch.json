@@ -5,39 +5,41 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"label": "build test",
 			"type": "node",
 			"request": "launch",
-			"name": "Launch Program2",
+			"name": "Lanzar Tests",
+			"runtimeVersion": "12.22.5",
 			"skipFiles": ["<node_internals>/**"],
 			"program": "${workspaceFolder}/node_modules/.bin/ts-mocha",
 			"args": [
+				"--require=ts-node/register",
 				"--loader=ts-node/esm",
 				"--no-warnings",
+				"--experimental-modules",
+				"--experimental-specifier-resolution=node",
 				"-p",
 				"tsconfig.json",
-				"src/**/*.spec.ts"
+				"${workspaceFolder}/tests/main.ts",
+				"${workspaceFolder}/tests/**/*.test.ts"
 			]
 		},
 		{
-			"label": "build",
 			"type": "node",
 			"request": "launch",
-			"name": "Launch Program",
+			"name": "Lanzar Cli",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}/dist/cli.js",
-			"preLaunchTask": "tsc: build - tsconfig.json",
-			"outFiles": ["${workspaceFolder}/dist/**/*.js"],
+			"program": "${workspaceFolder}/node_modules/.bin/ts-node",
+			"cwd": "${workspaceRoot}",
+			"runtimeVersion": "12.22.5",
 			"runtimeArgs": [
-				"--experimental-modules",
+				"--require=ts-node/register",
+				"--loader=ts-node/esm",
 				"--no-warnings",
+				"--experimental-modules",
 				"--experimental-specifier-resolution=node"
 			],
-			"group": "build",
-			"presentation": {
-				"reveal": "silent"
-			},
 			"args": [
+				"${workspaceFolder}/src/cli.ts",
 				"testnet",
 				"build",
 				"qr",
@@ -48,7 +50,7 @@
 				"-t",
 				"boxed",
 				"-h",
-				"Cambiando el  head"
+				"Cambiando el head"
 			]
 		}
 	]

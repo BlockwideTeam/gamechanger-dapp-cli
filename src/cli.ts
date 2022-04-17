@@ -1,5 +1,4 @@
 #!/usr/bin/env node --experimental-modules --no-warnings --experimental-specifier-resolution=node
-
 import { networks, usageMessage } from './config/index.js';
 import {
 	actionsHandlers,
@@ -13,10 +12,6 @@ const actions = Object.keys(actionsHandlers);
 process.on('uncaughtException', function (err) {
 	console.error('Error: ' + err.message);
 	console.error(usageMessage);
-});
-
-process.on('unhandledRejection', function (reason) {
-	throw reason;
 });
 
 try {

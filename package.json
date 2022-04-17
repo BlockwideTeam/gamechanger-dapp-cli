@@ -47,28 +47,31 @@
 		"build:prod": "esbuild src/cli.ts --bundle --platform=node --minify --sourcemap=external --outfile=dist/cli.js --external:./node_modules/* --format=esm",
 		"start": "node dist/cli.js",
 		"type-check": "tsc --noEmit && eslint .",
-		"test": "npm run build:dev && ava",
-		"full-test": "xo && ava"
+		"test": "mocha  --loader=ts-node/esm --no-warnings  -p tsconfig.json src/**/*.spec.ts"
 	},
 	"typings": "index.d.ts",
 	"devDependencies": {
+		"@types/chai": "^4.3.1",
+		"@types/expect": "^24.3.0",
 		"@types/jsdom": "^16.2.14",
+		"@types/mocha": "^9.1.0",
 		"@types/node": "^16.11.27",
 		"@typescript-eslint/eslint-plugin": "^5.3.1",
 		"@typescript-eslint/parser": "^5.3.1",
-		"ava": "^3.15.0",
 		"esbuild": "^0.14.36",
 		"esbuild-node": "^0.5.1",
 		"eslint": "^8.2.0",
 		"eslint-config-prettier": "^8.3.0",
 		"execa": "^5.0.0",
+		"mocha": "^9.2.2",
 		"prettier": "^2.4.1",
+		"ts-mocha": "^9.0.2",
 		"ts-node": "^10.7.0",
-		"typescript": "^4.4.4",
-		"xo": "^0.46.3"
+		"typescript": "^4.4.4"
 	},
 	"dependencies": {
 		"@babel/runtime": "^7.15.4",
+		"chai": "^4.3.6",
 		"data-uri-to-buffer": "^4.0.0",
 		"easyqrcodejs-nodejs": "^4.4.3",
 		"fs": "0.0.1-security",

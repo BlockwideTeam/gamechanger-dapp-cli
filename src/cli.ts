@@ -15,6 +15,10 @@ process.on('uncaughtException', function (err) {
 	console.error(usageMessage);
 });
 
+process.on('unhandledRejection', function (reason) {
+	throw reason;
+});
+
 try {
 	const network: string = cli.input[0];
 	if (!networks.includes(network)) {

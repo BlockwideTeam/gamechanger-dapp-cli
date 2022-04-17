@@ -3,7 +3,7 @@ import Root from 'app-root-path';
 
 const logoURL = resolve(
 	Root.toString(),
-	'./src/assets/images/qr-logo-black.png'
+	'./src/assets/images/dapp-logo-bg.png'
 );
 const backgroundURL = resolve(
 	Root.toString(),
@@ -20,8 +20,8 @@ const defaultTemplate = {
 	colorLight: 'rgba(0,0,0,0)',
 	drawer: 'canvas',
 	logo: logoURL,
-	logoWidth: size,
-	logoHeight: size,
+	logoWidth: 433,
+	logoHeight: 118,
 	dotScale: 1,
 	logoBackgroundTransparent: true,
 	backgroundImage: backgroundURL,
@@ -36,9 +36,6 @@ const styles: StyleType = {
 	default: defaultTemplate,
 	boxed: {
 		...defaultTemplate,
-		logo: undefined,
-		logoWidth: undefined,
-		logoHeight: undefined,
 		quietZone: 60,
 		quietZoneColor: 'rgba(0,0,0,0)',
 		title: 'GAME CHANGER',

@@ -4,7 +4,7 @@
 		"module": "es2020",
 		"allowJs": false,
 		"checkJs": false,
-		"sourceMap": true,
+		"sourceMap": false,
 		"outDir": "./dist",
 		"strict": true,
 		"noImplicitAny": true,
@@ -24,7 +24,7 @@
 		"types": ["node"],
 		"importHelpers": true
 	},
-	"exclude": ["test.js"],
+	"exclude": ["test.js", "src/types"],
 	"include": [
 		"src/**/*",
 		"index.d.ts",

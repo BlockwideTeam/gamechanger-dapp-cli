@@ -17,7 +17,8 @@
 		"node": ">=12"
 	},
 	"files": [
-		"dist/**/*"
+		"dist/**/*",
+		".bin/**/*"
 	],
 	"keywords": [
 		"Cardano",
@@ -38,11 +39,13 @@
 		"no code"
 	],
 	"scripts": {
-		"prepublish": "npm run build",
-		"start": "npm run build-ts && node dist/index.js",
-		"dev": "npm run build-ts && node --inspect-brk dist/index.js",
+		"prepublish": "npm run build:prod",
+		"clean": "rm -Rf dist",
+		"build:all": "npm run clean && npm run type-check",
+		"build:dev": "esbuild src/cli.ts --bundle --platform=node --outfile=dist/cli.js --external:./node_modules/* --format=esm",
+		"build:prod": "esbuild src/cli.ts --bundle --platform=node --minify --sourcemap=external --outfile=dist/cli.js --external:./node_modules/* --format=esm",
+		"start": "node dist/cli.js",
 		"type-check": "tsc --noEmit && eslint .",
-		"build": "rm -Rf dist/ && npm run type-check && tsc -p tsconfig.json",
 		"test": "ava",
 		"full-test": "xo && ava"
 	},
@@ -53,10 +56,13 @@
 		"@typescript-eslint/eslint-plugin": "^5.3.1",
 		"@typescript-eslint/parser": "^5.3.1",
 		"ava": "^3.15.0",
+		"esbuild": "^0.14.36",
+		"esbuild-node": "^0.5.1",
 		"eslint": "^8.2.0",
 		"eslint-config-prettier": "^8.3.0",
 		"execa": "^5.0.0",
 		"prettier": "^2.4.1",
+		"ts-node": "^10.7.0",
 		"typescript": "^4.4.4",
 		"xo": "^0.46.3"
 	},

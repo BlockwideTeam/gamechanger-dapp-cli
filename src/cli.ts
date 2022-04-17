@@ -1,11 +1,6 @@
 #!/usr/bin/env node  --no-warnings
-import { networks, usageMessage } from './config/index.js';
-import {
-	actionsHandlers,
-	cli,
-	sourcesHandlers,
-	execute,
-} from './handlers/index.js';
+import { networks, usageMessage } from './config';
+import { actionsHandlers, cli, sourcesHandlers, execute } from './handlers';
 
 const actions = Object.keys(actionsHandlers);
 

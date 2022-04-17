@@ -3,12 +3,12 @@ import QRCode from 'easyqrcodejs-nodejs';
 import convert from 'data-uri-to-buffer';
 import Style, { size } from '../config/styles';
 import Canvas from 'canvas';
-import { resolve } from 'path';
 
 import { ObjectType } from '../types';
+import { resolveGlobal } from '../utils';
 
 const { registerFont } = Canvas;
-const fontURL = resolve(process.cwd(), './dist/assets/fonts/ABSTRACT.ttf');
+const fontURL = resolveGlobal('../assets/fonts/ABSTRACT.ttf');
 
 export const getBackground = async (width: number = size) => {
 	const canvas = document.createElement('canvas');

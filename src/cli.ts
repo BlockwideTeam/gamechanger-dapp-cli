@@ -1,11 +1,6 @@
-#!/usr/bin/env node --experimental-modules --no-warnings --experimental-specifier-resolution=node
-import { networks, usageMessage } from './config/index.js';
-import {
-	actionsHandlers,
-	cli,
-	sourcesHandlers,
-	execute,
-} from './handlers/index.js';
+#!/usr/bin/env node  --no-warnings
+import { networks, usageMessage } from './config';
+import { actionsHandlers, cli, sourcesHandlers, execute } from './handlers';
 
 const actions = Object.keys(actionsHandlers);
 
@@ -15,28 +10,20 @@ process.on('uncaughtException', function (err) {
 });
 
 try {
-	const network: string = cli.input[0];
+	const [network, action, subAction] = cli.input;
 	if (!networks.includes(network)) {
 		throw new Error('Unknown Cardano network specification');
 	}
-	const action: string = cli.input[1];
+
 	if (!actions.includes(action)) {
 		throw new Error('Unknown action');
 	}
 
-	const subAction = cli.input[2];
 	if (!Object.keys(actionsHandlers[action]).includes(subAction)) {
 		throw new Error(`Unknown sub action for action '${action}'`);
 	}
 
-	let source;
-	if (cli.flags.args) {
-		source = 'args';
-	} else if (cli.flags.file) {
-		source = 'file';
-	} else {
-		source = 'stdin';
-	}
+	const source = cli.flags.args ? 'args' : cli.flags.file ? 'file' : 'stdin';
 
 	const actionResolver = actionsHandlers[action][subAction];
 	const sourceResolver = sourcesHandlers[source];

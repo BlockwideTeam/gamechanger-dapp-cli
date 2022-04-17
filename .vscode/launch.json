@@ -12,15 +12,8 @@
 			"skipFiles": ["<node_internals>/**"],
 			"program": "${workspaceFolder}/node_modules/.bin/ts-mocha",
 			"args": [
-				"--require=ts-node/register",
-				"--loader=ts-node/esm",
-				"--no-warnings",
-				"--experimental-modules",
-				"--experimental-specifier-resolution=node",
-				"-p",
-				"tsconfig.json",
-				"${workspaceFolder}/tests/main.ts",
-				"${workspaceFolder}/tests/**/*.test.ts"
+				"${workspaceFolder}/src/tests/main.ts",
+				"${workspaceFolder}/src/tests/**/*.test.ts"
 			]
 		},
 		{
@@ -31,13 +24,7 @@
 			"program": "${workspaceFolder}/node_modules/.bin/ts-node",
 			"cwd": "${workspaceRoot}",
 			"runtimeVersion": "12.22.5",
-			"runtimeArgs": [
-				"--require=ts-node/register",
-				"--loader=ts-node/esm",
-				"--no-warnings",
-				"--experimental-modules",
-				"--experimental-specifier-resolution=node"
-			],
+			"runtimeArgs": ["--require=ts-node/register", "--no-warnings"],
 			"args": [
 				"${workspaceFolder}/src/cli.ts",
 				"testnet",

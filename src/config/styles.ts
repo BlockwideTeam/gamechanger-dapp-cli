@@ -1,10 +1,7 @@
-import { resolve } from 'path';
+import { resolveGlobal } from '../utils';
 
-const logoURL = resolve(process.cwd(), './dist/assets/images/dapp-logo-bg.png');
-const backgroundURL = resolve(
-	process.cwd(),
-	'./dist/assets/images/background.png'
-);
+const logoURL = resolveGlobal('../assets/images/dapp-logo-bg.png');
+const backgroundURL = resolveGlobal('../assets/images/background.png');
 
 export const size = 1024;
 

@@ -47,7 +47,7 @@
 		"build:prod": "esbuild src/cli.ts --bundle --platform=node --minify --sourcemap=external --outfile=dist/cli.js --external:./node_modules/* --format=esm",
 		"start": "node dist/cli.js",
 		"type-check": "tsc --noEmit && eslint .",
-		"test": "ava",
+		"test": "npm run build:dev && ava",
 		"full-test": "xo && ava"
 	},
 	"typings": "index.d.ts",

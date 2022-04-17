@@ -5,6 +5,7 @@ import Style, { size } from '../config/styles';
 import Canvas from 'canvas';
 import { resolve } from 'path';
 import Root from 'app-root-path';
+import { ObjectType } from '../types';
 
 const { registerFont } = Canvas;
 const fontURL = resolve(Root.toString(), './src/assets/fonts/ABSTRACT.ttf');
@@ -38,10 +39,25 @@ export const getBackground = async (width: number = size) => {
 	return Promise.reject(new Error('Canvas not available'));
 };
 
+class QRCodeWrapper extends QRCode {
+	private _htOption!: ObjectType;
+
+	constructor(options: ObjectType) {
+		super(options);
+	}
+
+	changeStyles(styles: ObjectType) {
+		this._htOption = {
+			...(this._htOption || {}),
+			...styles,
+		};
+	}
+}
+
 export default function createQRCode(text: string, template = 'default') {
 	registerFont(fontURL, { family: 'Abstract' });
 	const style = Style[template];
-	const qrCode = new QRCode({
+	const qrCode = new QRCodeWrapper({
 		...style,
 		text: text,
 	});

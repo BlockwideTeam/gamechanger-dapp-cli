@@ -1,4 +1,5 @@
 export type NetworkType = 'testnet' | 'mainnet' | string;
+export type TemplateType = 'default' | 'boxed' | 'printable';
 export type HandlerInputType = {
 	network: NetworkType;
 	inputData: string;

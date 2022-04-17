@@ -42,13 +42,9 @@ export const cli = meow(usageMessage, {
 			type: 'string',
 			alias: 't',
 		},
-		header: {
+		styles: {
 			type: 'string',
-			alias: 'h',
-		},
-		description: {
-			type: 'string',
-			alias: 'd',
+			alias: 's',
 		},
 	},
 });

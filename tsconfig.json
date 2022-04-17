@@ -21,13 +21,17 @@
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
 		"typeRoots": ["./node_modules/@types"],
-		"types": ["node"],
+		"types": ["node", "mocha"],
 		"importHelpers": true
 	},
-	"exclude": ["test.js", "src/types"],
+	"exclude": ["src/types"],
 	"include": [
+		"test.ts",
 		"src/**/*",
 		"index.d.ts",
 		"./node_modules/easyqrcodejs-nodejs/index.d.ts"
-	]
+	],
+	"ts-node": {
+		"esm": true
+	}
 }

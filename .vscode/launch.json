@@ -12,15 +12,8 @@
 			"skipFiles": ["<node_internals>/**"],
 			"program": "${workspaceFolder}/node_modules/.bin/ts-mocha",
 			"args": [
-				"--require=ts-node/register",
-				"--loader=ts-node/esm",
-				"--no-warnings",
-				"--experimental-modules",
-				"--experimental-specifier-resolution=node",
-				"-p",
-				"tsconfig.json",
-				"${workspaceFolder}/tests/main.ts",
-				"${workspaceFolder}/tests/**/*.test.ts"
+				"${workspaceFolder}/src/tests/main.ts",
+				"${workspaceFolder}/src/tests/**/*.test.ts"
 			]
 		},
 		{
@@ -28,18 +21,10 @@
 			"request": "launch",
 			"name": "Lanzar Cli",
 			"skipFiles": ["<node_internals>/**"],
-			"program": "${workspaceFolder}/node_modules/.bin/ts-node",
-			"cwd": "${workspaceRoot}",
-			"runtimeVersion": "12.22.5",
-			"runtimeArgs": [
-				"--require=ts-node/register",
-				"--loader=ts-node/esm",
-				"--no-warnings",
-				"--experimental-modules",
-				"--experimental-specifier-resolution=node"
-			],
+			"preLaunchTask": "tsc: build - tsconfig.json",
+			"outFiles": ["${workspaceFolder}/out/**/*.js"],
 			"args": [
-				"${workspaceFolder}/src/cli.ts",
+				"${workspaceFolder}/dist/cli.js",
 				"testnet",
 				"build",
 				"qr",

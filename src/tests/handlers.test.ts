@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import UrlHandler from '../src/handlers/url';
+import UrlHandler from '../handlers/url';
 
 describe('GameChanger DAPP CLI', () => {
 	it('should build the correct url for the demo.gcs script', async () => {

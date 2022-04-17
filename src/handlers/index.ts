@@ -18,7 +18,6 @@ export const execute = async ({ network, action, source }: ExecuteType) => {
 };
 
 export const cli = meow(usageMessage, {
-	importMeta: import.meta,
 	help: usageMessage,
 	autoHelp: true,
 	flags: {

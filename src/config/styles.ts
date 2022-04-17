@@ -1,14 +1,10 @@
-import { resolve } from 'path';
-import Root from 'app-root-path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const logoURL = resolve(
-	Root.toString(),
-	'./src/assets/images/dapp-logo-bg.png'
-);
-const backgroundURL = resolve(
-	Root.toString(),
-	'./src/assets/images/background.png'
-);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const logoURL = resolve(__dirname, '../src/assets/images/dapp-logo-bg.png');
+const backgroundURL = resolve(__dirname, '../src/assets/images/background.png');
 
 export const size = 1024;
 

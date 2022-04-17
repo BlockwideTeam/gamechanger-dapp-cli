@@ -10,7 +10,7 @@
 		"noImplicitAny": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"isolatedModules": true,
+		"isolatedModules": false,
 		"baseUrl": ".",
 		"allowSyntheticDefaultImports": true,
 		"moduleResolution": "node",

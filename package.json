@@ -1,6 +1,6 @@
 {
 	"name": "gamechanger-dapp-cli",
-	"version": "0.0.18",
+	"version": "0.0.19",
 	"description": "Command line interface for creating ready to use dApps for Cardano with GameChanger Wallet (https://gamechanger.finance/)",
 	"license": "MIT",
 	"repository": "BlockwideTeam/gamechanger-dapp-cli",

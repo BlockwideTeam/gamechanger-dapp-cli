@@ -1,2 +1,4 @@
-src
+src/
 .vscode
+node_modules
+yarn.lock
